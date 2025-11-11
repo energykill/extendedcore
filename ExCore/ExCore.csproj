@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AssemblyName>ExCore</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)build/</OutputPath>
+    <PublishDir>$(OutputPath)publish/ExCore</PublishDir>
+  </PropertyGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\ExCore.API\ExCore.API.csproj" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources/gamedata/**/*;resources/templates/**/*;resources/translations/**/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+	<Target Name="CopySharedDll" AfterTargets="Publish">
+		<MakeDir Directories="$(PublishDir)resources/exports" />
+		<ItemGroup>
+			<SharedDll Include="$(PublishDir)ExCore.API.dll" />
+		</ItemGroup>
+		<Copy SourceFiles="@(SharedDll)" DestinationFolder="$(PublishDir)resources/exports/" SkipUnchangedFiles="true" />
+	</Target>
+
+</Project> 
